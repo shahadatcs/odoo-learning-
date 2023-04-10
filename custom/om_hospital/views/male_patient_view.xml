@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  how to action setting -->
+    <record id="action_hospital_male_patient" model="ir.actions.act_window">
+        <field name="name">Male Patient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <!-- it's dictionary which set default value -->
+        <field name="context">{'default_gender':'male'}</field>
+        <!-- When we click submenu that also filter corresponding domain -->
+        <field name="domain">[('gender', '=', 'male')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face" style="color:red">
+                Create a Male patient !
+            </p>
+        </field>
+    </record>
+
+</odoo>

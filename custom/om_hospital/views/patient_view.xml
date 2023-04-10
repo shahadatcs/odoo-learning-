@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    it's tree view -->
+    <record id="view_hospital_patient_tree" model="ir.ui.view">
+        <field name="name">hospital.patient.tree</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!--patient name label-->
+                <field name="name" string="patient name"/>
+                <field name="date_of_birth"/>
+                <field name="ref"/>
+                <field name="age"/>
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- it's form view-->
+    <record id="view_hospital_patient_form" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
+                        </group>
+                        <group>
+                            <field name="ref"/>
+                            <field name="gender"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <!--Chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    it's search view -->
+    <record id="hospital_patient_search_view" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <!--patient name label and filter domain-->
+                <field name="name" string="patient name"
+                       filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>
+                <field name="ref" string="reference"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <!-- Or operational filter-->
+                <filter name="filter_male" string="male" domain="[('gender', '=', 'male')]"/>
+                <filter name="filter_female" string="female" domain="[('gender', '=', 'female')]"/>
+                <!--  Separator use for 'AND' operation filter-->
+                <!--                <separator/>-->
+                <!--                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>-->
+                <separator/>
+                <!--Hide and UnHide filter process with Archive System -->
+                <filter name="filter_archive" string="Archived" domain="[('active', '=', False)]"/>
+                <!--group by filter -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_gender" string="Gender" domain="[]" context="{'group_by':'gender'}"/>
+                </group>
+                <searchpanel>
+                    <field name="gender" icon="fa-users" select="multi" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!--  how to action setting -->
+    <record id="action_hospital_patient" model="ir.actions.act_window">
+        <field name="name">Patient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <!--it's dictionary which set default search value -->
+        <field name="context">{'search_default_group_by_gender': 1, 'search_default_filter_male': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face" style="color:red">
+                Create a patient !
+            </p>
+        </field>
+    </record>
+
+    <!-- Here we also add action with submenu -->
+    <!--    <menuitem id="menu_patient" name="Patients" action="action_hospital_patient" parent="menu_patient_master"-->
+    <!--              sequence="1"/>-->
+</odoo>

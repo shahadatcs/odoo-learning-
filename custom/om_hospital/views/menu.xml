@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    create menu and submenu -->
+    <menuitem id="menu_hospital_root" name="Hospital" web_icon="om_hospital,static/description/icn.png" sequence="0"/>
+    <menuitem id="menu_patient_master" name="patient Details" parent="menu_hospital_root" sequence="1"/>
+
+    <menuitem id="menu_hospital_appointment" name="Appointments" parent="menu_hospital_root" sequence="2"/>
+
+    <!-- action for female submenu -->
+    <menuitem id="menu_patient" name="Patients" action="action_hospital_patient"
+              parent="menu_patient_master"
+              sequence="1"/>
+    <menuitem id="menu_female_patient" name="Female Patients" action="action_hospital_female_patient"
+              parent="menu_patient_master"
+              sequence="2"/>
+    <!-- action for male submenu -->
+    <menuitem id="menu_male_patient" name="Male Patients" action="action_hospital_male_patient"
+              parent="menu_patient_master"
+              sequence="3"/>
+    <!-- action for kids submenu -->
+    <menuitem id="menu_kids_patient" name="kids Patients" action="action_hospital_kids_patient"
+              parent="menu_patient_master"
+              sequence="4"/>
+
+    <!-- action for Appointments submenu -->
+    <menuitem id="menu_appointment" name="Appointment" action="action_hospital_appointment"
+              parent="menu_hospital_appointment" sequence="1"/>
+
+    <!--    Custom action setting from sales modules-->
+    <!--    <menuitem id="menu_patient" name="Patient" action="sale.product_template_action" parent="menu_patient_master" sequence="1"/>-->
+    <!--    &lt;!&ndash;                          <menuitem id="next_id_2" name="User Interface" parent="menu_hospital_root"/>&ndash;&gt;-->
+    <!--    &lt;!&ndash;&lt;!&ndash;              <menuitem id="menu_email" name="Email" parent="menu_custom" sequence="1"/>&ndash;&gt;&ndash;&gt;-->
+    <!--    &lt;!&ndash;&lt;!&ndash;              <menuitem id="next_id_9" name="Database Structure" parent="base.menu_custom"/>&ndash;&gt;&ndash;&gt;-->
+    <!--    &lt;!&ndash;&lt;!&ndash;              <menuitem id="menu_automation" name="Automation" parent="base.menu_custom"/>&ndash;&gt;&ndash;&gt;-->
+    <!--    &lt;!&ndash;&lt;!&ndash;              <menuitem id="menu_security" name="Security" parent="menu_custom" sequence="25"/>&ndash;&gt;&ndash;&gt;-->
+    <!--    &lt;!&ndash;&lt;!&ndash;              <menuitem id="menu_ir_property" name="Parameters" parent="menu_custom" sequence="24"/>&ndash;&gt;&ndash;&gt;-->
+</odoo>
