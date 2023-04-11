@@ -19,8 +19,10 @@ class HospitalAppointment(models.Model):
     priority = fields.Selection([('0', 'Very Low'), ('1', 'Low'), ('2', 'Normal'), ('3', 'High')], string='Priority')
     # Add Statusbar In Odoo Development
     state = fields.Selection(
-        [('draft', 'Draft'), ('in_consultation', 'In Consultation'), ('done', 'Done'), ('cancel', 'Cancelled')],
+        [('draft', 'Draft'), ('in_consultation', 'In Consultation'), ('done', 'Done'), ('cancel', 'Cancelled'),
+         ('warning', 'Warning')],
         default='draft', string="Status", required=True)
+    doctor_id = fields.Many2one('res.users', string='Doctor')
 
     # Define Onchange Functions
     @api.onchange('patient_id')
@@ -29,7 +31,7 @@ class HospitalAppointment(models.Model):
 
     def action_test(self):
         print('click button')
-        # Rainbow Effect 
+        # Rainbow Effect
         return {
             'effect': {
                 'fadeout': 'slow',
@@ -37,3 +39,23 @@ class HospitalAppointment(models.Model):
                 'type': 'rainbow_man',
             }
         }
+
+    def action_in_consultation(self):
+        for rec in self:
+            rec.state = 'in_consultation'
+
+    def action_done(self):
+        for rec in self:
+            rec.state = 'done'
+
+    def action_cancel(self):
+        for rec in self:
+            rec.state = 'cancel'
+
+    def action_draft(self):
+        for rec in self:
+            rec.state = 'draft'
+
+    def action_warning(self):
+        for rec in self:
+            rec.state = 'warning'

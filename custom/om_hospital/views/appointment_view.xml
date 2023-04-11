@@ -4,13 +4,20 @@
     <record id="view_hospital_appointment_tree" model="ir.ui.view">
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
-            <tree>
+            <!-- Multi Editing-->
+            <tree decoration-success="state =='done'" decoration-info="state=='draft'" decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'" decoration-warning="state =='warning'" sample="1" multi_edit="1">
                 <!--patient name label-->
                 <field name="patient_id"/>
                 <field name="gender"/>
-                <field name="appointment_time"/>
-                <field name="booking_date"/>
+                <!-- Many2one Avatar And Many2One Avatar User Widget-->
+                <field name="doctor_id" widget="many2one_avatar_user"/>
+                <!--Optional Field Visibility In List View-->
+                <field name="appointment_time" optional="show"/>
+                <field name="booking_date" optional="hide"/>
+                <field name="activity_ids" widget="list_activity"/>
                 <field name="ref"/>
+                <!--Badge Widget And Decorations-->
+                <field name="state" decoration-success="state =='done'" decoration-info="state=='draft'" decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'" decoration-warning="state =='warning'"  widget="badge"/>
             </tree>
         </field>
     </record>
@@ -22,10 +29,15 @@
         <field name="arch" type="xml">
             <!--Remove Create, Edit, Delete and Duplicate Options From Views create="0" edit="0" delete="0" copy="0" -->
             <form>
-                <!--Add Statusbar In Odoo Development -->
+                <!--Add Statusbar In Odoo Development options="{'clickable': '1'}"-->
                 <header>
-                    <field name="state" widget="statusbar" nolabel="1" options="{'clickable': '1'}"
-                           statusbar_visible="draft,in_consultation,done"/>
+                    <field name="state" widget="statusbar" nolabel="1"
+                           statusbar_visible="draft,in_consultation,done,cancel,warning"/>
+                    <button name="action_in_consultation" string="In Consultation" states="in_consultation" class="oe_highlight" type="object"/>
+                    <button name="action_done" string="Done" class="oe_highlight" type="object"/>
+                    <button name="action_cancel" string="Cancelled" class="oe_highlight" type="object"/>
+                    <button name="action_draft" string="Draft" class="oe_highlight" type="object"/>
+                    <button name="action_warning" string="Warning" class="oe_highlight" type="object"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -39,7 +51,9 @@
                             <field name="patient_id"/>
                             <field name="ref"/>
                             <field name="gender"/>
-                            <field name="booking_date"/>
+                            <!--Default Focus Attribute-->
+                            <field name="booking_date" default_focus="1"/>
+                            <field name="doctor_id" widget="many2one_avatar_user"/>
                         </group>
                         <group>
                             <field name="appointment_time"/>
@@ -52,7 +66,8 @@
                     <!--Add Notebook And Pages -->
                     <notebook>
                         <page string="Prescription" name="prescription">
-                            <field name="prescription" placeholder="Enter your prescription"/>
+                              <!-- Make HTML Field Collaborative and Resizable-->
+                            <field name="prescription" placeholder="Enter your prescription" options="{'collaborative':true, 'resizable':true}"/>
                         </page>
                         <page string="Test" name="test">
                             <group>
