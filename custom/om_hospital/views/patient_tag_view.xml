@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    it's tree view -->
+    <record id="view_patient_tag_tree" model="ir.ui.view">
+        <field name="name">patient.tag.tree</field>
+        <field name="model">patient.tag</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="active"/>
+                <field name="color" widget="color_picker"/>
+                <field name="color_2"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- it's form view-->
+    <record id="view_patient_tag_form" model="ir.ui.view">
+        <field name="name">patient.tag.form</field>
+        <field name="model">patient.tag</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                           <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                            <field name="color_2" widget="color" groups="base.group_no_one"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                </sheet>
+                <!--Chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--  how to action setting -->
+    <record id="action_patient_tag" model="ir.actions.act_window">
+        <field name="name">Patient Tag</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">patient.tag</field>
+        <field name="view_mode">tree,form</field>
+        <!--it's dictionary which set default search value -->
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face" style="color:red">
+                Create a patient tags!
+            </p>
+        </field>
+    </record>
+
+    <!-- Here we also add action with submenu -->
+    <!--    <menuitem id="menu_patient" name="Patients" action="action_hospital_patient" parent="menu_patient_master"-->
+    <!--              sequence="1"/>-->
+</odoo>

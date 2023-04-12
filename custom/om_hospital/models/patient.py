@@ -16,6 +16,8 @@ class HospitalPatient(models.Model):
         [('male', 'Male'), ('female', 'Female'), ('kids', 'Kids'), ('neuter', 'Neuter'), ('common', 'Common'),
          ('other', 'Other')], string='Gender', tracking=True, default='other')
     active = fields.Boolean(default=True, string='True')
+    image = fields.Image(string='image')
+    tag_ids = fields.Many2many('patient.tag', string='tags')
 
     # Create Computed Field
     @api.depends('date_of_birth')
@@ -26,3 +28,6 @@ class HospitalPatient(models.Model):
                 rec.age = today.year - rec.date_of_birth.year
             else:
                 rec.age = 1
+
+
+

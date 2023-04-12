@@ -3,8 +3,8 @@
     <!--    create menu and submenu -->
     <menuitem id="menu_hospital_root" name="Hospital" web_icon="om_hospital,static/description/icn.png" sequence="0"/>
     <menuitem id="menu_patient_master" name="patient Details" parent="menu_hospital_root" sequence="1"/>
-
     <menuitem id="menu_hospital_appointment" name="Appointments" parent="menu_hospital_root" sequence="2"/>
+    <menuitem id="menu_configuration" name="Configurations" parent="menu_hospital_root" sequence="3"/>
 
     <!-- action for female submenu -->
     <menuitem id="menu_patient" name="Patients" action="action_hospital_patient"
@@ -25,6 +25,9 @@
     <!-- action for Appointments submenu -->
     <menuitem id="menu_appointment" name="Appointment" action="action_hospital_appointment"
               parent="menu_hospital_appointment" sequence="1"/>
+
+    <menuitem id="menu_tag" name="tags" action="action_patient_tag"
+              parent="menu_configuration" sequence="1"/>
 
     <!--    Custom action setting from sales modules-->
     <!--    <menuitem id="menu_patient" name="Patient" action="sale.product_template_action" parent="menu_patient_master" sequence="1"/>-->

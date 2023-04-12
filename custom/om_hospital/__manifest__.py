@@ -5,10 +5,10 @@
     'category': 'Hospital',
     'summary': 'Hospital management system',
     'description': """Hospital management system""",
-    'depends': ['mail'],
+    'depends': ['mail', 'product'],
     'data': [
+        'views/patient_tag_view.xml',
         'security/ir.model.access.csv',
-
         'views/patient_view.xml',
         'views/appointment_view.xml',
         'views/kids_patient_view.xml',

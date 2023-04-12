@@ -11,6 +11,7 @@
                 <field name="date_of_birth"/>
                 <field name="ref"/>
                 <field name="age"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                 <field name="gender"/>
             </tree>
         </field>
@@ -23,6 +24,7 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <field name="name"/>
@@ -32,6 +34,8 @@
                         <group>
                             <field name="ref"/>
                             <field name="gender"/>
+                            <!-- To Enable Color Options For Many2many Field-->
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>

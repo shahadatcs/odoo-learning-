@@ -5,7 +5,9 @@
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
             <!-- Multi Editing-->
-            <tree decoration-success="state =='done'" decoration-info="state=='draft'" decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'" decoration-warning="state =='warning'" sample="1" multi_edit="1">
+            <tree decoration-success="state =='done'" decoration-info="state=='draft'"
+                  decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'"
+                  decoration-warning="state =='warning'" sample="1" multi_edit="1">
                 <!--patient name label-->
                 <field name="patient_id"/>
                 <field name="gender"/>
@@ -17,7 +19,9 @@
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="ref"/>
                 <!--Badge Widget And Decorations-->
-                <field name="state" decoration-success="state =='done'" decoration-info="state=='draft'" decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'" decoration-warning="state =='warning'"  widget="badge"/>
+                <field name="state" decoration-success="state =='done'" decoration-info="state=='draft'"
+                       decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'"
+                       decoration-warning="state =='warning'" widget="badge"/>
             </tree>
         </field>
     </record>
@@ -29,12 +33,13 @@
         <field name="arch" type="xml">
             <!--Remove Create, Edit, Delete and Duplicate Options From Views create="0" edit="0" delete="0" copy="0" -->
             <form>
-                <!--Add Statusbar In Odoo Development options="{'clickable': '1'}"-->
+                <!--Add Statusbar and data-hotkey In Odoo Development options="{'clickable': '1'}"-->
                 <header>
                     <field name="state" widget="statusbar" nolabel="1"
                            statusbar_visible="draft,in_consultation,done,cancel,warning"/>
-                    <button name="action_in_consultation" string="In Consultation" states="in_consultation" class="oe_highlight" type="object"/>
-                    <button name="action_done" string="Done" class="oe_highlight" type="object"/>
+                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight" type="object"
+                            states="draft"/>
+                    <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight" type="object"/>
                     <button name="action_cancel" string="Cancelled" class="oe_highlight" type="object"/>
                     <button name="action_draft" string="Draft" class="oe_highlight" type="object"/>
                     <button name="action_warning" string="Warning" class="oe_highlight" type="object"/>
@@ -56,32 +61,45 @@
                             <field name="doctor_id" widget="many2one_avatar_user"/>
                         </group>
                         <group>
+                            <field name="hide_sales_price" groups="base.group_no_one"/>
                             <field name="appointment_time"/>
-                        <!--  Add Buttons In Odoo || Odoo Button Types -->
-                             <button name="action_test" string="Object Button" confirm="Are you sure execute python code ?" help="A message will be printed in the log" class="oe_highlight" type="object"/>
-                            <button name="%(om_hospital.action_hospital_patient)d" string="Action Button" help="On clicking this you will redirect patient record" confirm="Are you sure to open the patient action ?" class="oe_highlight" type="action"/>
+                            <!--  Add Buttons In Odoo || Odoo Button Types -->
+                            <button name="action_test" string="Object Button"
+                                    confirm="Are you sure execute python code ?"
+                                    help="A message will be printed in the log" class="oe_highlight" type="object"/>
+                            <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
+                                    help="On clicking this you will redirect patient record"
+                                    confirm="Are you sure to open the patient action ?" class="oe_highlight"
+                                    type="action"/>
 
                         </group>
                     </group>
                     <!--Add Notebook And Pages -->
                     <notebook>
                         <page string="Prescription" name="prescription">
-                              <!-- Make HTML Field Collaborative and Resizable-->
-                            <field name="prescription" placeholder="Enter your prescription" options="{'collaborative':true, 'resizable':true}"/>
+                            <!-- Make HTML Field Collaborative and Resizable-->
+                            <field name="prescription" placeholder="Enter your prescription"
+                                   options="{'collaborative':true, 'resizable':true}"/>
                         </page>
-                        <page string="Test" name="test">
-                            <group>
-                                <field name="ref"/>
-                            </group>
-                        </page>
-                    </notebook>
-                    <notebook>
                         <page string="Pharmacy" name="pharmacy">
-                            <group>
-                                <field name="booking_date"/>
-                            </group>
+                            <field name="pharmacy_lines_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="price_unit" attrs="{'column_invisible': [('parent.hide_sales_price', '=', True)]}"/>
+                                    <field name="qty"/>
+                                </tree>
+
+                                <form>
+                                    <group>
+                                        <field name="product_id"/>
+                                        <field name="price_unit" attrs="{'column invisible': [('parent.hide_sales_price', '=', True)]}"/>
+                                        <field name="qty"/>
+                                    </group>
+                                </form>
+                            </field>
                         </page>
                     </notebook>
+
                 </sheet>
                 <!-- -->
 
