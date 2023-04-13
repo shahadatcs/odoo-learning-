@@ -7,8 +7,11 @@
     'description': """Hospital management system""",
     'depends': ['mail', 'product'],
     'data': [
+        'data/patient.tag.csv',
+        'data/patient_tag_data.xml',
         'views/patient_tag_view.xml',
         'security/ir.model.access.csv',
+        'wizard/cancel_appointment_view.xml',
         'views/patient_view.xml',
         'views/appointment_view.xml',
         'views/kids_patient_view.xml',

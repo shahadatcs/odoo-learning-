@@ -2,12 +2,13 @@ from odoo import api, fields, models
 from datetime import date
 
 
-class PatientTag(models.Model):
-    _name = "patient.tag"
+class CancelAppointmentWizard(models.TransientModel):
+    _name = "cancel.appointment.wizard"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = "Patient Tag"
+    _description = "Cancel Appointment Wizard"
 
-    name = fields.Char(string='name', required=True)
-    active = fields.Boolean(default=True, string='Active')
-    color = fields.Integer(string='color')
-    color_2 = fields.Char(string='color 2')
+    appointment_id = fields.Many2one('hospital.appointment', string='Appointment')
+    reason = fields.Text(string='Reason')
+
+    def action_cancel(self):
+        return

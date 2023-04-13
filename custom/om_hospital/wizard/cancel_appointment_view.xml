@@ -1,161 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--Create Activity View-->
-    <record id="view_hospital_appointment_activity" model="ir.ui.view">
-        <field name="name">hospital.appointment.activity</field>
-        <field name="model">hospital.appointment</field>
-        <field name="arch" type="xml">
-            <activity string="Appointments">
-                <field name="patient_id"/>
-                <field name="ref"/>
-                <templates>
-                    <div t-name="activity-box">
-                        <img t-att-src="activity_image('hospital.patient', 'image', record.patient_id.raw_value)"
-                             t-att-title="record.patient_id.value" t-att-alt="record.patient_id.value"/>
-                        <div>
-                            <field name="ref" display="full"/>
-                        </div>
-                    </div>
-                </templates>
-            </activity>
-        </field>
-    </record>
-
-    <!--    it's tree view -->
-    <record id="view_hospital_appointment_tree" model="ir.ui.view">
-        <field name="model">hospital.appointment</field>
-        <field name="arch" type="xml">
-            <!-- Multi Editing-->
-            <tree decoration-success="state =='done'" decoration-info="state=='draft'"
-                  decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'"
-                  decoration-warning="state =='warning'" sample="1" multi_edit="1">
-                <!--patient name label-->
-                <field name="patient_id"/>
-                <field name="gender"/>
-                <!-- Many2one Avatar And Many2One Avatar User Widget-->
-                <field name="doctor_id" widget="many2one_avatar_user"/>
-                <!--Optional Field Visibility In List View-->
-                <field name="appointment_time" optional="show"/>
-                <field name="booking_date" optional="hide"/>
-                <field name="activity_ids" widget="list_activity"/>
-                <field name="ref"/>
-                <!--Badge Widget And Decorations-->
-                <field name="state" decoration-success="state =='done'" decoration-info="state=='draft'"
-                       decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'"
-                       decoration-warning="state =='warning'" widget="badge"/>
-            </tree>
-        </field>
-    </record>
-
     <!-- it's form view-->
-    <record id="view_hospital_appointment_form" model="ir.ui.view">
-        <field name="name">hospital.appointment.form</field>
-        <field name="model">hospital.appointment</field>
+    <record id="view_cancel_appointment_form" model="ir.ui.view">
+        <field name="name">cancel.appointment.wizard.form</field>
+        <field name="model">cancel.appointment.wizard</field>
         <field name="arch" type="xml">
-            <!--Remove Create, Edit, Delete and Duplicate Options From Views create="0" edit="0" delete="0" copy="0" -->
             <form>
-                <!--Add Statusbar and data-hotkey In Odoo Development options="{'clickable': '1'}"-->
-                <header>
-                    <field name="state" widget="statusbar" nolabel="1"
-                           statusbar_visible="draft,in_consultation,done,cancel,warning"/>
-                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight" type="object"
-                            states="draft"/>
-                    <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight" type="object"/>
-                    <button name="action_cancel" string="Cancelled" class="oe_highlight" type="object"/>
-                    <button name="action_draft" string="Draft" class="oe_highlight" type="object"/>
-                    <button name="action_warning" string="Warning" class="oe_highlight" type="object"/>
-                </header>
-                <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="priority" widget="priority" class="mr-3"/>
-                        </h1>
-                    </div>
-
+                <group>
                     <group>
-                        <group>
-                            <field name="patient_id"/>
-                            <field name="ref"/>
-                            <field name="gender"/>
-                            <!--Default Focus Attribute-->
-                            <field name="booking_date" default_focus="1"/>
-                            <field name="doctor_id" widget="many2one_avatar_user"/>
-                        </group>
-                        <group>
-                            <field name="hide_sales_price" groups="base.group_no_one"/>
-                            <field name="appointment_time"/>
-                            <!--  Add Buttons In Odoo || Odoo Button Types -->
-                            <button name="action_test" string="Object Button"
-                                    confirm="Are you sure execute python code ?"
-                                    help="A message will be printed in the log" class="oe_highlight" type="object"/>
-                            <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
-                                    help="On clicking this you will redirect patient record"
-                                    confirm="Are you sure to open the patient action ?" class="oe_highlight"
-                                    type="action"/>
-
-                        </group>
+                        <field name="appointment_id"/>
+                        <field name="reason"/>
                     </group>
-                    <!--Add Notebook And Pages -->
-                    <notebook>
-                        <page string="Prescription" name="prescription">
-                            <!-- Make HTML Field Collaborative, Resizable, codeview-->
-                            <field name="prescription" placeholder="Enter your prescription"
-                                   options="{'collaborative':true, 'resizable':true, 'codeview':true}"/>
-                        </page>
-                        <page string="Pharmacy" name="pharmacy">
-                            <field name="pharmacy_lines_ids">
-                                <tree editable="bottom">
-                                    <field name="product_id"/>
-                                    <field name="price_unit"
-                                           attrs="{'column_invisible': [('parent.hide_sales_price', '=', True)]}"/>
-                                    <field name="qty"/>
-                                </tree>
-
-                                <form>
-                                    <group>
-                                        <field name="product_id"/>
-                                        <field name="price_unit"
-                                               attrs="{'column invisible': [('parent.hide_sales_price', '=', True)]}"/>
-                                        <field name="qty"/>
-                                    </group>
-                                </form>
-                            </field>
-                        </page>
-                    </notebook>
-
-                </sheet>
-                <!-- -->
-
-                <!--Chatter-->
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
-                </div>
+                    <group>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_cancel" type="object" string="Cancel Appointment" class="btn-primary"
+                            data-hotkey="q"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
             </form>
         </field>
     </record>
 
-    <!--    it's search view -->
-    <record id="view_hospital_appointment_search" model="ir.ui.view">
-        <field name="model">hospital.appointment</field>
-        <field name="arch" type="xml">
-            <search>
-            </search>
-        </field>
-    </record>
-
     <!--  how to action setting -->
-    <record id="action_hospital_appointment" model="ir.actions.act_window">
-        <field name="name">Appointments</field>
+    <record id="action_cancel_appointment" model="ir.actions.act_window">
+        <field name="name">Cancel Appointments</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">hospital.appointment</field>
-        <field name="view_mode">tree,form,activity</field>
+        <field name="res_model">cancel.appointment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
         <!--it's dictionary which set default search value -->
-        <field name="context">{}</field>
+<!--        <field name="context">{}</field>-->
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face" style="color:red">
-                Create a Hospital Appointment !
+                Create a Cancel Appointment !
             </p>
         </field>
     </record>
