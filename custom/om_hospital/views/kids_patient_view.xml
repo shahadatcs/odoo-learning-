@@ -17,6 +17,8 @@
         </field>
     </record>
 
-    <!-- Here we also add action with submenu -->
-
+    <!-- action with submenu -->
+    <menuitem id="menu_kids_patient" name="kids Patient" action="action_hospital_kids_patient"
+              parent="menu_patient_master"
+              sequence="4"/>
 </odoo>
