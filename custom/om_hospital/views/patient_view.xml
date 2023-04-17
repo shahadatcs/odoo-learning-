@@ -10,7 +10,7 @@
                 <field name="name" string="patient name"/>
                 <field name="date_of_birth"/>
                 <field name="ref"/>
-                <field name="age"/>
+<!--                <field name="appointment_id"/>-->
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                 <field name="gender"/>
             </tree>
@@ -30,6 +30,7 @@
                             <field name="name"/>
                             <field name="date_of_birth"/>
                             <field name="age"/>
+<!--                            <field name="appointment_id"/>-->
                         </group>
                         <group>
                             <field name="ref"/>

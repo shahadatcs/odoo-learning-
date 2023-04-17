@@ -8,6 +8,7 @@
     'depends': ['mail', 'product'],
     'data': [
         'data/patient.tag.csv',
+        'data/sequence_data.xml',
         'data/patient_tag_data.xml',
         'views/patient_tag_view.xml',
         'security/ir.model.access.csv',
