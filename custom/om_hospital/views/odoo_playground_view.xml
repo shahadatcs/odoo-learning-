@@ -72,10 +72,9 @@
         </record>
 
     <!--    Here we also add action with submenu-->
-    <menuitem id="menu_technical" name="Technical" parent="menu_hospital_root" sequence="10">
-        <menuitem id="menu_playground" name="Playground"  action="action_playground_view"
-              sequence="4"/>
-        </menuitem>
+<!--    <menuitem id="menu_technical" name="Technical" parent="menu_hospital_root" sequence="10">-->
+<!--        <menuitem id="menu_playground" name="Playground" action="action_playground_view" sequence="4"/>-->
+<!--        </menuitem>-->
 
 <!--        <menuitem id="menu_technical" name="Technical" sequence="10">-->
 <!--        <menuitem id="menu_playground1" name="Playground1" sequence="20">-->

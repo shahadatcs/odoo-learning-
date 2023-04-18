@@ -12,8 +12,8 @@
         'data/sequence_data.xml',
         'data/patient_tag_data.xml',
 
-        'views/patient_tag_view.xml',
         'wizard/cancel_appointment_view.xml',
+        'views/patient_tag_view.xml',
         'views/patient_view.xml',
         'views/test.xml',
         'views/odoo_playground_view.xml',

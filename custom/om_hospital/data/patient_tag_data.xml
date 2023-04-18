@@ -3,9 +3,9 @@
     <record id="patient_tag_vip" model="patient.tag">
         <field name="name">VIP</field>
     </record>
-    <record id="patient_tag_ceo" model="patient.tag">
-        <field name="name">CEO</field>
-    </record>
+<!--    <record id="patient_tag_ceo" model="patient.tag">-->
+<!--        <field name="name">CEO</field>-->
+<!--    </record>-->
     <record id="patient_tag_adult" model="patient.tag">
         <field name="name">Adult</field>
     </record>
