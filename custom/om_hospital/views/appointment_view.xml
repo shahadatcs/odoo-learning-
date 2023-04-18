@@ -56,13 +56,12 @@
             <form>
                 <!--Add Statusbar and data-hotkey In Odoo Development options="{'clickable': '1'}"-->
                 <header>
-                    <field name="state" widget="statusbar" nolabel="1"
-                           statusbar_visible="draft,in_consultation,done,cancel,warning"/>
-                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight" type="object"/>
-                    <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight" type="object"/>
-                    <button name="action_cancel" string="Cancel" class="oe_highlight" type="object" states="draft, in_consultation"/>
-                    <button name="action_draft" string="Draft" class="oe_highlight" type="object"/>
-                    <button name="action_warning" string="Warning" class="oe_highlight" type="object"/>
+                    <button name="action_in_consultation" string="In Consultation" data-hotkey="x" class="oe_highlight" states="draft" type="object"/>
+                    <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight" states="in_consultation" type="object"/>
+                    <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" data-hotkey="c" class="oe_highlight" context="{'default_appointment_id': active_id, 'hide_appointment':1}" type="action" states="draft, in_consultation"/>
+                    <button name="action_draft" string="Draft" data-hotkey="d" class="oe_highlight" type="object"/>
+                    <button name="action_warning" string="Warning" data-hotkey="w" class="oe_highlight" type="object"/>
+                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,in_consultation,done"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

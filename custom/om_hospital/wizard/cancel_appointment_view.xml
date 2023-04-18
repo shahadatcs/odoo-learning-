@@ -17,7 +17,7 @@
                 </group>
                 <footer>
                     <button name="action_cancel" type="object" string="Cancel Appointment" class="btn-primary"
-                            data-hotkey="q"/>
+                            data-hotkey="q" invisible="context.get(hide_appointment)"/>
                     <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>

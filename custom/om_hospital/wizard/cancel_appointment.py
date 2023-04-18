@@ -19,5 +19,6 @@ class CancelAppointmentWizard(models.TransientModel):
     cancel_date = fields.Date(string='Cancellation Date')
 
     def action_cancel(self):
-        return
-
+        action = self.env.ref('om_hospital.action_hospital_appointment').read()[0]
+        action['domain'] = [('patient_id', '=', self.patient_id.id)]
+        return action

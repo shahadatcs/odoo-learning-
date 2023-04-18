@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    it's tree view -->
+    <record id="view_hospital_patient_tree_test" model="ir.ui.view">
+        <field name="name">hospital.patient.tree.test</field>
+        <field name="model">hospital.patient.test</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!--patient name label-->
+                <field name="name" string="patient name"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- it's form view-->
+    <record id="view_hospital_patient_form_test" model="ir.ui.view">
+        <field name="name">hospital.patient.form.test</field>
+        <field name="model">hospital.patient.test</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+<!--                    <field name="image" widget="image" class="oe_avatar"/>-->
+                    <group>
+                        <group>
+                            <field name="name"/>
+                           <!-- <field name="date_of_birth"/>
+                            <field name="age"/>-->
+<!--                            <field name="appointment_id"/>-->
+                        </group>
+<!--                        <group>-->
+<!--                            <field name="ref"/>-->
+<!--                            <field name="gender"/>-->
+<!--                            &lt;!&ndash; To Enable Color Options For Many2many Field&ndash;&gt;-->
+<!--                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>-->
+<!--                            <field name="active" invisible="1"/>-->
+<!--                        </group>-->
+                    </group>
+                </sheet>
+                <!--Chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+
+    <!--  how to action setting -->
+    <record id="action_hospital_patient_test" model="ir.actions.act_window">
+        <field name="name">Patient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient.test</field>
+        <field name="view_mode">tree,form</field>
+        <!--it's dictionary which set default search value -->
+        <field name="context">{'search_default_group_by_gender': 1, 'search_default_filter_male': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face" style="color:red">
+                Create a patient !
+            </p>
+        </field>
+    </record>
+
+    <!-- Here we also add action with submenu -->
+    <!--    <menuitem id="menu_patient" name="Patients" action="action_hospital_patient" parent="menu_patient_master"-->
+    <!--              sequence="1"/>-->
+</odoo>
