@@ -28,8 +28,15 @@
             <!-- Multi Editing-->
             <tree decoration-success="state =='done'" decoration-info="state=='draft'"
                   decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'"
-                  decoration-warning="state =='warning'" sample="1" multi_edit="1">
+                  decoration-warning="state =='warning'" sample="1" multi_edit="1" export_xlsx="0">
+
+                <header>
+                    <button name="action_in_consultation" string="In Consultation" class="oe_highlight"
+                            type="object"/>
+                </header>
+
                 <!--patient name label-->
+                <field name="name" readonly="1"/>
                 <field name="patient_id"/>
                 <field name="gender"/>
                 <!-- Many2one Avatar And Many2One Avatar User Widget-->
@@ -43,6 +50,17 @@
                 <field name="state" decoration-success="state =='done'" decoration-info="state=='draft'"
                        decoration-danger="state =='cancel'" decoration-muted="state =='in_consultation'"
                        decoration-warning="state =='warning'" widget="badge"/>
+
+                <button name="action_done" string="Mark as Done" class="fa fa-check btn-success"
+                        attrs="{'invisible': [('state', '!=', 'in_consultation')]}" type="object"/>
+
+                <button name="%(om_hospital.action_cancel_appointment)d" class="fa fa-times btn-danger"
+                        context="{'default_appointment_id': active_id, 'hide_appointment':1}"
+                        attrs="{'invisible': [('state', 'not in', ('in_consultation', 'draft'))]}" type="action"/>
+                <groupby name="patient_id">
+                   <button name="action_tet" string="Click Me" class="oe_highlight" type="object"/>
+                   <button name="edit" string="Edit Me" class="oe_highlight" type="edit"/>
+                </groupby>
             </tree>
         </field>
     </record>
@@ -56,9 +74,13 @@
             <form>
                 <!--Add Statusbar and data-hotkey In Odoo Development options="{'clickable': '1'}"-->
                 <header>
-                    <button name="action_in_consultation" string="In Consultation" data-hotkey="x" class="oe_highlight" states="draft" type="object"/>
-                    <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight" states="in_consultation" type="object"/>
-                    <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" data-hotkey="c" class="oe_highlight" context="{'default_appointment_id': active_id, 'hide_appointment':1}" type="action" states="draft, in_consultation"/>
+                    <button name="action_in_consultation" string="In Consultation" data-hotkey="x" class="oe_highlight"
+                            states="draft" type="object"/>
+                    <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight"
+                            states="in_consultation" type="object"/>
+                    <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" data-hotkey="c"
+                            class="oe_highlight" context="{'default_appointment_id': active_id, 'hide_appointment':1}"
+                            type="action" states="draft, in_consultation"/>
                     <button name="action_draft" string="Draft" data-hotkey="d" class="oe_highlight" type="object"/>
                     <button name="action_warning" string="Warning" data-hotkey="w" class="oe_highlight" type="object"/>
                     <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,in_consultation,done"/>
@@ -72,6 +94,7 @@
 
                     <group>
                         <group>
+                            <field name="name"/>
                             <field name="patient_id"/>
                             <field name="ref"/>
                             <field name="gender"/>

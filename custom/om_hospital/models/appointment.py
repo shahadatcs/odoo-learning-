@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 # create a database table
@@ -8,12 +9,13 @@ class HospitalAppointment(models.Model):
     _description = "Hospital Appointment"
     _rec_name = 'ref'
 
-    patient_id = fields.Many2one(comodel_name='hospital.patient', string='patient')
+    name = fields.Char(string='Sequence', default='New')
+    patient_id = fields.Many2one(comodel_name='hospital.patient', string='patient', ondelete='cascade')
     gender = fields.Selection(related='patient_id.gender')  # readonly=false that selection progress
     appointment_time = fields.Datetime(string='Appointment Time', default=fields.Datetime.now)
     booking_date = fields.Date(string='Booking Date', default=fields.Date.context_today)
     ref = fields.Char(string='reference', help='reference of the patient from the patient record')
-    patient_id = fields.Many2one(comodel_name='hospital.patient', string='patient')
+    # patient_id = fields.Many2one(comodel_name='hospital.patient', string='patient')
     # Define HTML Field In Odoo
     prescription = fields.Html(string='Prescription')
     priority = fields.Selection([('0', 'Very Low'), ('1', 'Low'), ('2', 'Normal'), ('3', 'High')], string='Priority')
@@ -31,6 +33,12 @@ class HospitalAppointment(models.Model):
     def onchange_patient_id(self):
         self.ref = self.patient_id.ref
 
+    def unlink(self):
+        print("test__________")
+        if self.state == 'draft':
+            raise ValidationError(_('you cannot delete appointment with Draft status'))
+        return super(HospitalAppointment, self).unlink()
+
     def action_test(self):
         print('click button')
         # Rainbow Effect
@@ -44,7 +52,8 @@ class HospitalAppointment(models.Model):
 
     def action_in_consultation(self):
         for rec in self:
-            rec.state = 'in_consultation'
+            if rec.state == 'draft':
+                rec.state = 'in_consultation'
 
     def action_done(self):
         for rec in self:

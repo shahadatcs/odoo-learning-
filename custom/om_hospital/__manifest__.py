@@ -13,6 +13,7 @@
         'data/patient_tag_data.xml',
 
         'wizard/cancel_appointment_view.xml',
+        'views/res_config_settings_views.xml',
         'views/patient_tag_view.xml',
         'views/patient_view.xml',
         'views/test.xml',

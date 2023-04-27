@@ -32,12 +32,15 @@
 
     <menuitem id="menu_tag" name="tags" action="action_patient_tag"
               parent="menu_configuration" sequence="1"/>
+    <menuitem id="fleet_config_settings_menu" name="Settings"
+              parent="menu_configuration" sequence="2" action="fleet_config_settings_action"
+              groups="base.group_system"/>
 
-     <menuitem id="menu_kids_patient" name="kids Patient" action="action_hospital_kids_patient"
+    <menuitem id="menu_kids_patient" name="kids Patient" action="action_hospital_kids_patient"
               parent="menu_patient_master"
               sequence="4"/>
-    <menuitem id="menu_playground" name="Playground" action="action_playground_view" parent="technical_menu_test" sequence="4"/>
-
+    <menuitem id="menu_playground" name="Playground" action="action_playground_view" parent="technical_menu_test"
+              sequence="4"/>
 
     <!--    Custom action setting from sales modules-->
     <!--    <menuitem id="menu_patient" name="Patient" action="sale.product_template_action" parent="menu_patient_master" sequence="1"/>-->
