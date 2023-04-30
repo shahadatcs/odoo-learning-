@@ -1,5 +1,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from datetime import date
+from dateutil import relativedelta
+import random
 
 
 # create a database table
@@ -8,6 +11,7 @@ class HospitalAppointment(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Hospital Appointment"
     _rec_name = 'ref'
+    _order = 'id desc'
 
     name = fields.Char(string='Sequence', default='New')
     patient_id = fields.Many2one(comodel_name='hospital.patient', string='patient', ondelete='cascade')
@@ -18,6 +22,7 @@ class HospitalAppointment(models.Model):
     # patient_id = fields.Many2one(comodel_name='hospital.patient', string='patient')
     # Define HTML Field In Odoo
     prescription = fields.Html(string='Prescription')
+    operation = fields.Char(string='Operation')
     priority = fields.Selection([('0', 'Very Low'), ('1', 'Low'), ('2', 'Normal'), ('3', 'High')], string='Priority')
     # Add Statusbar In Odoo Development
     state = fields.Selection(
@@ -27,6 +32,10 @@ class HospitalAppointment(models.Model):
     doctor_id = fields.Many2one('res.users', string='Doctor')
     pharmacy_lines_ids = fields.One2many('appointment.pharmacy.lines', 'appointment_id', string='Pharmacy')
     hide_sales_price = fields.Boolean(string='Hide sales price')
+    operation_id = fields.Many2one('hospital.operation', string="Operations")
+    progress = fields.Integer(string='Progress', compute='compute_progress')
+    progress_gauge = fields.Integer(string='Progress', compute='compute_progress')
+    duration = fields.Float(string='Duration')
 
     # Define Onchange Functions
     @api.onchange('patient_id')
@@ -35,7 +44,7 @@ class HospitalAppointment(models.Model):
 
     def unlink(self):
         print("test__________")
-        if self.state == 'draft':
+        if self.state != 'draft':
             raise ValidationError(_('you cannot delete appointment with Draft status'))
         return super(HospitalAppointment, self).unlink()
 
@@ -73,6 +82,30 @@ class HospitalAppointment(models.Model):
     def action_warning(self):
         for rec in self:
             rec.state = 'warning'
+
+    @api.depends('state')
+    def compute_progress(self):
+        for rec in self:
+            if rec.state == 'draft':
+                progress = random.randrange(0, 25)
+            elif rec.state == 'in_consultation':
+                progress = random.randrange(0, 30)
+            elif rec.state == 'done':
+                progress = random.randrange(0, 20)
+            elif rec.state == 'cancel':
+                progress = random.randrange(0, 15)
+            elif rec.state == 'warning':
+                progress = 10
+            else:
+                progress = 0
+            rec.progress = progress
+
+    # def name_get(self):
+    #     result = []
+    #     for rec in self:
+    #         operation = rec.operation
+    #         result.append(operation)
+    #     return result
 
     class AppointmentPharmacyLines(models.Model):
         _name = "appointment.pharmacy.lines"

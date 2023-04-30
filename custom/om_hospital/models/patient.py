@@ -28,6 +28,10 @@ class HospitalPatient(models.Model):
     marital_status = fields.Selection([('married', 'Married'), ('single', 'Single')], string='Marital Status',
                                       tracking=True)
     partner_name = fields.Char(string='Partner Name')
+    is_birthday = fields.Boolean(string='Birthday ?', compute='compute_birthday')
+    phone = fields.Char(string='Phone')
+    email = fields.Char(string='Email')
+    website = fields.Char(string='Website')
 
     # @api.model
     # def create(self, vals):
@@ -51,11 +55,21 @@ class HospitalPatient(models.Model):
     @api.depends('appointment_ids')
     def count_appointment(self):
         for rec in self:
-            rec.appointment_count = self.env['hospital.appointment'].search_count([('patient_id', '=', rec.id)])
+            appointment_group = self.env['hospital.appointment'].read_group(domain=[], fields=['patient_id'],
+                                                                            groupby=['patient_id'])
+            print('Appointment', appointment_group)
+            for appointment in appointment_group:
+                print('Appointment', appointment.get('patient_id')[0])
+                patient_id = appointment.get('patient_id')[0]
+                patient_rec = self
+            rec.appointment_count = 10
+        # count appointment
+        # rec.appointment_count = self.env['hospital.appointment'].search_count([('patient_id', '=', rec.id)])
 
     @api.model
     def create(self, vals):
         print('Odoo mates', vals)
+        # Create sequnce
         vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
         return super(HospitalPatient, self).create(vals)
 
@@ -67,12 +81,12 @@ class HospitalPatient(models.Model):
 
     def name_get(self):
         patient_list = []
-
         for record in self:
             name = record.ref + ' ' + record.name
             patient_list.append((record.id, name))
             return patient_list
-            # return [(record.id, "[%s] %s", (record.id, name)) for record in self:]
+
+    # return [(record.id, "[%s] %s", (record.id, name)) for record in self:]
 
     # Create Computed Field
     @api.depends('date_of_birth')
@@ -102,3 +116,13 @@ class HospitalPatient(models.Model):
     def action_tet(self):
         print('Clicked')
         return
+
+    @api.depends('date_of_birth')
+    def compute_birthday(self):
+        for rec in self:
+            is_birthday = False
+            if rec.date_of_birth:
+                today = date.today()
+                if today.day == rec.date_of_birth.day and today.month == rec.date_of_birth.month:
+                    is_birthday = True
+            rec.is_birthday = is_birthday

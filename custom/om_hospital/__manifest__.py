@@ -15,6 +15,7 @@
         'wizard/cancel_appointment_view.xml',
         'views/res_config_settings_views.xml',
         'views/patient_tag_view.xml',
+        'views/operation_view.xml',
         'views/patient_view.xml',
         'views/test.xml',
         'views/odoo_playground_view.xml',

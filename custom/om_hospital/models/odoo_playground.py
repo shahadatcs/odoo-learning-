@@ -13,8 +13,12 @@ class OdooPlayground(models.Model):
     #  It was popularised  the 1960s with the 
     #  release of  sheets containing Lorem Ipsum passages.'''
     model_id = fields.Many2one('ir.model', string='Model')
-    code = fields.Text(string='Code', default=variable)
+    code = fields.Text(string='Code')
     result = fields.Text(string='Result')
+
+    def action_clear(self):
+        self.code = ''
+        self.result = ''
 
     def action_execute(self):
         try:

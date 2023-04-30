@@ -35,6 +35,9 @@
     <menuitem id="fleet_config_settings_menu" name="Settings"
               parent="menu_configuration" sequence="2" action="fleet_config_settings_action"
               groups="base.group_system"/>
+    <menuitem id="fleet_config_operation_menu" name="Operation"
+              parent="menu_configuration" sequence="3" action="action_hospital_operation"
+              groups="base.group_system"/>
 
     <menuitem id="menu_kids_patient" name="kids Patient" action="action_hospital_kids_patient"
               parent="menu_patient_master"

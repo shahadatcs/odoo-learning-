@@ -9,9 +9,9 @@
                 <!--patient name label-->
                 <field name="name" string="patient name"/>
                 <field name="date_of_birth"/>
-                <field name="age"/>
+                <field name="age" avg="Average Age"/>
                 <field name="ref"/>
-                <field name="appointment_count"/>
+                <field name="appointment_count" sum="Total Appointment"/>
                 <!--                <field name="appointment_id"/>-->
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                 <field name="gender"/>
@@ -26,10 +26,22 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <!--   Alert      -->
+                    <div class="alert alert-info text-center o_form_header" role="alert"
+                    attrs="{'invisible': [('is_birthday', '=', False)]}">
+                        <a class="close" data-dismiss="alert" href="#">x</a>
+                        <div>
+                            <strong>To is Birthday</strong>
+                        </div>
+                        <div>Wish
+                            <field name="name" readonly="1"/>
+                        </div>
+                    </div>
+
                     <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h4>
-                            <field name="ref" readonly="1"/>
+                            <field name="ref"/>
                         </h4>
                         <h2>
                             <label for="name" string="Name" class="oe_edit_only"/>
@@ -46,9 +58,10 @@
                         <group>
                             <field name="gender" invisible="context.get('hide_gender')" widget="radio"/>
                             <!-- To Enable Color Options For Many2many Field-->
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            <field name="tag_ids" widget="many2many_checkboxes" options="{'color_field':'color'}"/>
                             <field name="active" invisible="1"/>
                             <field name="appointment_count"/>
+                            <field name="is_birthday" invisible="1"/>
                         </group>
                     </group>
                     <group string="Other Information" name="other_info">
@@ -57,6 +70,11 @@
                             <field name="marital_status" attrs="{'invisible': [('age', '&lt;=', 18)]}"/>
                             <field name="partner_name"
                                    attrs="{'readonly': [('marital_status', '!=', 'married')], 'required': [('marital_status', '=', 'married')]}"/>
+                        </group>
+                        <group>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
+                            <field name="website" widget="url"/>
                         </group>
                     </group>
                 </sheet>
