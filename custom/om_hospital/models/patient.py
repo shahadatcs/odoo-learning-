@@ -56,6 +56,7 @@ class HospitalPatient(models.Model):
     @api.model
     def create(self, vals):
         print('Odoo mates', vals)
+        # Create sequnce
         vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
         return super(HospitalPatient, self).create(vals)
 

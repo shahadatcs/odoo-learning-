@@ -1,5 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+from datetime import date
+from dateutil import relativedelta
 
 
 # create a database table
@@ -35,7 +37,7 @@ class HospitalAppointment(models.Model):
 
     def unlink(self):
         print("test__________")
-        if self.state == 'draft':
+        if self.state != 'draft':
             raise ValidationError(_('you cannot delete appointment with Draft status'))
         return super(HospitalAppointment, self).unlink()
 

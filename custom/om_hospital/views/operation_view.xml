@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    it's tree view -->
+    <record id="view_hospital_operation_tree" model="ir.ui.view">
+        <field name="name">hospital.operation.tree</field>
+        <field name="model">hospital.operation</field>
+        <field name="arch" type="xml">
+            <tree export_xlsx="0">
+                <field name="operation_name"/>
+                <field name="doctor_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- it's form view-->
+    <record id="view_hospital_operation_form" model="ir.ui.view">
+        <field name="name">hospital.operation.form</field>
+        <field name="model">hospital.operation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="operation_name"/>
+                        <field name="doctor_id"/>
+                    </group>
+                </sheet>
+                <!--Chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    it's search view -->
+    <!--    <record id="hospital_patient_search_view" model="ir.ui.view">-->
+    <!--        <field name="name">hospital.patient.search</field>-->
+    <!--        <field name="model">hospital.patient</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <search>-->
+    <!--                &lt;!&ndash;patient name label and filter domain&ndash;&gt;-->
+    <!--                <field name="name" string="patient name"-->
+    <!--                       filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]"/>-->
+    <!--                <field name="ref" string="reference"/>-->
+    <!--                <field name="age"/>-->
+    <!--                <field name="gender"/>-->
+    <!--                &lt;!&ndash; Or operational filter&ndash;&gt;-->
+    <!--                <filter name="filter_male" string="male" domain="[('gender', '=', 'male')]"/>-->
+    <!--                <filter name="filter_female" string="female" domain="[('gender', '=', 'female')]"/>-->
+    <!--                &lt;!&ndash;  Separator use for 'AND' operation filter&ndash;&gt;-->
+    <!--                &lt;!&ndash;                <separator/>&ndash;&gt;-->
+    <!--                &lt;!&ndash;                <filter name="filter_kids" string="kids" domain="[('age', '&lt;=', 5)]"/>&ndash;&gt;-->
+    <!--                <separator/>-->
+    <!--                &lt;!&ndash;Hide and UnHide filter process with Archive System &ndash;&gt;-->
+    <!--                <filter name="filter_archive" string="Archived" domain="[('active', '=', False)]"/>-->
+    <!--                &lt;!&ndash;group by filter &ndash;&gt;-->
+    <!--                <group expand="0" string="Group By">-->
+    <!--                    <filter name="group_by_gender" string="Gender" domain="[]" context="{'group_by':'gender'}"/>-->
+    <!--                </group>-->
+    <!--                <searchpanel>-->
+    <!--                    <field name="gender" icon="fa-users" select="multi" enable_counters="1"/>-->
+    <!--                </searchpanel>-->
+    <!--            </search>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <!--  how to action setting -->
+    <record id="action_hospital_operation" model="ir.actions.act_window">
+        <field name="name">Operation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.operation</field>
+        <field name="view_mode">tree,form</field>
+        <!--it's dictionary which set default search value -->
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face" style="color:red">
+                Create a patient Operation!
+            </p>
+        </field>
+    </record>
+
+    <!-- Here we also add action with submenu -->
+    <!--    <menuitem id="menu_patient" name="Patients" action="action_hospital_patient" parent="menu_patient_master"-->
+    <!--              sequence="1"/>-->
+</odoo>

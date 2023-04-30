@@ -29,7 +29,7 @@
                     <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h4>
-                            <field name="ref" readonly="1"/>
+                            <field name="ref"/>
                         </h4>
                         <h2>
                             <label for="name" string="Name" class="oe_edit_only"/>
@@ -46,7 +46,7 @@
                         <group>
                             <field name="gender" invisible="context.get('hide_gender')" widget="radio"/>
                             <!-- To Enable Color Options For Many2many Field-->
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            <field name="tag_ids" widget="many2many_checkboxes" options="{'color_field':'color'}"/>
                             <field name="active" invisible="1"/>
                             <field name="appointment_count"/>
                         </group>
