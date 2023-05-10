@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from odoo import api, fields, models, _
+=======
+from odoo import api, fields, models
+>>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
 from odoo.exceptions import ValidationError
 from datetime import date
 from dateutil import relativedelta
@@ -26,6 +30,7 @@ class CancelAppointmentWizard(models.TransientModel):
     def action_cancel(self):
         # action = self.env.ref('om_hospital.action_hospital_appointment').read()[0]
         cancel_days = self.env['ir.config_parameter'].get_param('om_hospital.cancel_days')
+<<<<<<< HEAD
         allowed_day = self.appointment_id.booking_date - relativedelta.relativedelta(days=int(cancel_days))
         print('Cancel Days', allowed_day)
         if cancel_days != 0 and allowed_day < date.today():
@@ -42,5 +47,11 @@ class CancelAppointmentWizard(models.TransientModel):
         #     'type': 'ir.actions.client',
         #     'tag': 'reload',
         # }
+=======
+        allowed_day = date.today() - relativedelta.relativedelta(days=int(cancel_days))
+        print('Cancel Days', allowed_day)
+        if allowed_day > date.today():
+            raise ValidationError('Sorry, Cancellation is not allowed for booking')
+>>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
         # #action['domain'] = [('patient_id', '=', self.patient_id.id)]
         # return action

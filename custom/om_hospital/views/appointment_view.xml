@@ -130,6 +130,7 @@
 
                     <group>
                         <group>
+<<<<<<< HEAD
                             <field name="patient_id"/>
                             <field name="name"/>
                             <field name="ref" force_save="1"/>
@@ -140,6 +141,15 @@
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="operation_id"/>
                             <field name="duration"/>
+=======
+                            <field name="patient_id" widget="selection"/>
+                            <field name="name"/>
+                            <field name="ref" readonly="1" force_save="1"/>
+                            <field name="gender"/>
+                            <!--Default Focus Attribute-->
+                            <field name="booking_date" default_focus="1"/>
+                            <field name="operation" default_focus="1"/>
+>>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
                             <field name="doctor_id" widget="many2one_avatar_user"/>
                         </group>
                         <group>

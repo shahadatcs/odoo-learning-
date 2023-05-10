@@ -2,7 +2,10 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from datetime import date
 from dateutil import relativedelta
+<<<<<<< HEAD
 import random
+=======
+>>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
 
 
 # create a database table
