@@ -7,7 +7,7 @@ class PatientTag(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Patient Tag"
 
-    name = fields.Char(string='name', required=True)
+    name = fields.Char(string='name', required=True, trim=False)
     active = fields.Boolean(default=True, string='Active')
     color = fields.Integer(string='color')
     color_2 = fields.Char(string='color 2')

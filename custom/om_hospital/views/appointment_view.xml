@@ -40,10 +40,11 @@
         <field name="model">hospital.appointment</field>
         <field name="arch" type="xml">
             <calendar string="Appointment" date_start="booking_date"
-                      mode="month" date_delay="duration" color="patient_id" quick_add="false" event_open_popup="true" event_limit="4"
+                      mode="month" date_delay="duration" color="patient_id" quick_add="false" event_open_popup="true"
+                      event_limit="4"
                       hide_time="true" form_view_id="%(om_hospital.view_hospital_appointment_form)d">
-                    <field name="patient_id" filters="1" avatar_field="image"/>
-                    <field name="state" filters="1" invisible="1"/>
+                <field name="patient_id" filters="1" avatar_field="image"/>
+                <field name="state" filters="1" invisible="1"/>
             </calendar>
         </field>
     </record>
@@ -64,11 +65,14 @@
                 <!--patient name label-->
                 <field name="name" readonly="1"/>
                 <field name="patient_id"/>
-                <field name="gender"/>
+                <field name="gender" decoration-it="1" decoration-bf="1" decoration-success="gender=='female'"/>
                 <!-- Many2one Avatar And Many2One Avatar User Widget-->
                 <field name="doctor_id" widget="many2one_avatar_user"/>
                 <!--Optional Field Visibility In List View-->
                 <field name="appointment_time" optional="show"/>
+                <field name="company_id"/>
+                <field name="currency_id"/>
+<!--                <field name="amount_total" decoration-bf="1"/>-->
                 <field name="booking_date" optional="hide"/>
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="ref"/>
@@ -105,9 +109,14 @@
                             states="draft" type="object"/>
                     <button name="action_done" string="Done" data-hotkey="k" class="oe_highlight"
                             states="in_consultation" type="object"/>
+
+                    <button name="action_share_whatsapp" string="Share IN Whatsapp" type="object"
+                        class="oe_highlight" data-hotkey="w" icon="fa-whatsapp"/>
+
                     <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" data-hotkey="c"
                             class="oe_highlight" context="{'default_appointment_id': active_id, 'hide_appointment':1}"
                             type="action" states="draft, in_consultation"/>
+
                     <button name="action_draft" string="Draft" data-hotkey="d" class="oe_highlight" type="object"/>
                     <button name="action_warning" string="Warning" data-hotkey="w" class="oe_highlight" type="object"/>
                     <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,in_consultation,done"/>
@@ -127,6 +136,8 @@
                             <field name="gender"/>
                             <!--Default Focus Attribute-->
                             <field name="booking_date" default_focus="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="operation_id"/>
                             <field name="duration"/>
                             <field name="doctor_id" widget="many2one_avatar_user"/>
@@ -135,9 +146,13 @@
                             <field name="hide_sales_price" groups="base.group_no_one"/>
                             <field name="appointment_time"/>
                             <!--  Add Buttons In Odoo || Odoo Button Types -->
-                            <button name="action_test" string="Object Button"
-                                    confirm="Are you sure execute python code ?"
+                            <button name="action_test" string="Redirect Button"
+                                    confirm="Are you sure you need to redirect ?"
                                     help="A message will be printed in the log" class="oe_highlight" type="object"/>
+
+                            <button name="action_notification" string="Notification Button"
+                                    groups="base.group_no_one" class="oe_highlight" type="object"/>
+
                             <button name="%(om_hospital.action_hospital_patient)d" string="Action Button"
                                     help="On clicking this you will redirect patient record"
                                     confirm="Are you sure to open the patient action ?" class="oe_highlight"
@@ -160,9 +175,11 @@
                             <field name="pharmacy_lines_ids">
                                 <tree editable="bottom">
                                     <field name="product_id"/>
-                                    <field name="price_unit"
+                                    <field name="price_unit" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits':True}"
                                            attrs="{'column_invisible': [('parent.hide_sales_price', '=', True)]}"/>
                                     <field name="qty"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="price_subtotal"/>
                                 </tree>
 
                                 <form>

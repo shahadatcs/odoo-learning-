@@ -11,3 +11,9 @@ class SaleOrder(models.Model):
         print('success..........')
         super(SaleOrder, self).action_confirm()
         self.confirmed_user_id = self.env.user.id
+
+    def prepare_invoice(self):
+        invoice_vals = super(SaleOrder, self).prepare_invoice()
+        invoice_vals['so_confirmed_user_id'] = self.confirmed_user_id.id
+        print('invoice_vals', invoice_vals)
+        return invoice_vals

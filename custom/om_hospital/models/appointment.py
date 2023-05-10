@@ -37,10 +37,31 @@ class HospitalAppointment(models.Model):
     progress_gauge = fields.Integer(string='Progress', compute='compute_progress')
     duration = fields.Float(string='Duration')
 
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
+
     # Define Onchange Functions
     @api.onchange('patient_id')
     def onchange_patient_id(self):
         self.ref = self.patient_id.ref
+
+    def action_notification(self):
+        message = 'Button Click on Successful'
+        action = self.env.ref('om_hospital.action_hospital_appointment')
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                # 'message': message,
+                'type': 'success',
+                'message': '%s',
+                'links': [{
+                    'label': self.patient_id.name,
+                    'url': f'#action={action.id}&id={self.patient_id.id}&model=hospital.patient',
+                }],
+                'sticky': True,
+            }
+        }
 
     def unlink(self):
         print("test__________")
@@ -49,15 +70,21 @@ class HospitalAppointment(models.Model):
         return super(HospitalAppointment, self).unlink()
 
     def action_test(self):
-        print('click button')
-        # Rainbow Effect
         return {
-            'effect': {
-                'fadeout': 'slow',
-                'message': 'Click Successful',
-                'type': 'rainbow_man',
-            }
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'url': 'https://www.hackerrank.com/',
         }
+
+    # print('click button')
+    # # Rainbow Effect
+    # return {
+    #     'effect': {
+    #         'fadeout': 'slow',
+    #         'message': 'Click Successful',
+    #         'type': 'rainbow_man',
+    #     }
+    # }
 
     def action_in_consultation(self):
         for rec in self:
@@ -67,6 +94,13 @@ class HospitalAppointment(models.Model):
     def action_done(self):
         for rec in self:
             rec.state = 'done'
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': 'Click Successful',
+                'type': 'rainbow_man',
+            }
+        }
 
     # def action_cancel(self):
     #     for rec in self:
@@ -107,11 +141,35 @@ class HospitalAppointment(models.Model):
     #         result.append(operation)
     #     return result
 
+    def action_share_whatsapp(self):
+        if not self.patient_id.phone:
+            raise ValidationError(_('Missing Phone Number in Patient Record'))
+        message = 'Hi *%s*, your *appointment* number is: %s, Thank you' % (self.patient_id.name, self.name)
+        whatsapp_api_url = "https://api.whatsapp.com/send?phone=%s&text=%s" % (self.patient_id.phone, message)
+        self.message_post(body=message, subject='Whatsapp Message')
+        return {
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'url': whatsapp_api_url
+        }
+
     class AppointmentPharmacyLines(models.Model):
         _name = "appointment.pharmacy.lines"
         _description = "Appointment Pharmacy Lines"
 
         product_id = fields.Many2one('product.product', required=True)
-        price_unit = fields.Float(related='product_id.list_price')
+        price_unit = fields.Float(related='product_id.list_price', digits='Product Price')
         qty = fields.Integer(string='Quantity', default=1)
         appointment_id = fields.Many2one('hospital.appointment', string='Appointment')
+        currency_id = fields.Many2one('res.currency', related='appointment_id.currency_id')
+        price_subtotal = fields.Monetary(string='Subtotal', compute='compute_price_subtotal',
+                                         currency_field='currency_id')
+
+        @api.onchange('product_id')
+        def onchange_product_id(self):
+            self.price_unit = self.product_id.lst_price
+
+        @api.depends('price_unit', 'qty')
+        def compute_price_subtotal(self):
+            for rec in self:
+                rec.price_subtotal = rec.price_unit * rec.qty

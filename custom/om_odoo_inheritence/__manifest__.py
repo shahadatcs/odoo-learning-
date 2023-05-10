@@ -11,6 +11,7 @@
     'depends': ['sale', 'sale_stock'],
     'data': [
         'views/sale_order_view.xml',
+        'views/account_move_view.xml',
     ],
     'demo': [],
 }

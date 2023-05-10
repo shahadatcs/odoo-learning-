@@ -54,17 +54,20 @@ class HospitalPatient(models.Model):
 
     @api.depends('appointment_ids')
     def count_appointment(self):
-        for rec in self:
-            appointment_group = self.env['hospital.appointment'].read_group(domain=[], fields=['patient_id'],
-                                                                            groupby=['patient_id'])
-            print('Appointment', appointment_group)
-            for appointment in appointment_group:
-                print('Appointment', appointment.get('patient_id')[0])
-                patient_id = appointment.get('patient_id')[0]
-                patient_rec = self
-            rec.appointment_count = 10
-        # count appointment
-        # rec.appointment_count = self.env['hospital.appointment'].search_count([('patient_id', '=', rec.id)])
+        # for rec in self:
+        appointment_group = self.env['hospital.appointment'].read_group(domain=[], fields=['patient_id'],
+                                                                        groupby=['patient_id'])
+        # print('Appointment', appointment_group)
+        # for appointment in appointment_group:
+        #     print('Appointment', appointment.get('patient_id')[0])
+        #     patient_id = appointment.get('patient_id')[0]
+        #     patient_rec = self.browse(patient_id)
+        #     patient_rec.appointment_count = appointment['patient_id_count']
+        #     self -= patient_rec
+        self.appointment_count = 0
+
+    # count appointment
+    # rec.appointment_count = self.env['hospital.appointment'].search_count([('patient_id', '=', rec.id)])
 
     @api.model
     def create(self, vals):
@@ -79,12 +82,12 @@ class HospitalPatient(models.Model):
             vals['ref'] = self.env['ir.sequence'].next_by_code('hospital.patient')
         return super(HospitalPatient, self).writ(vals)
 
-    def name_get(self):
-        patient_list = []
-        for record in self:
-            name = record.ref + ' ' + record.name
-            patient_list.append((record.id, name))
-            return patient_list
+    # def name_get(self):
+    #     patient_list = []
+    #     for record in self:
+    #         name = record.ref + ' ' + record.name
+    #         patient_list.append((record.id, name))
+    #     return patient_list
 
     # return [(record.id, "[%s] %s", (record.id, name)) for record in self:]
 
@@ -126,3 +129,14 @@ class HospitalPatient(models.Model):
                 if today.day == rec.date_of_birth.day and today.month == rec.date_of_birth.month:
                     is_birthday = True
             rec.is_birthday = is_birthday
+
+    def action_view_appointments(self):
+        return {
+            'name': _('Appointment'),
+            'res_model': 'hospital.appointment',
+            'view_mode': 'tree,form,calendar,activity',
+            'context': {'default_patient_id': self.id},
+            'domain': [('patient_id', '=', self.id)],
+            'target': 'current',
+            'type': 'ir.actions.act_window',
+        }
