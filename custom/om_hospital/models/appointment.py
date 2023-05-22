@@ -2,10 +2,8 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from datetime import date
 from dateutil import relativedelta
-<<<<<<< HEAD
+from random import randrange
 import random
-=======
->>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
 
 
 # create a database table
@@ -37,11 +35,39 @@ class HospitalAppointment(models.Model):
     hide_sales_price = fields.Boolean(string='Hide sales price')
     operation_id = fields.Many2one('hospital.operation', string="Operations")
     progress = fields.Integer(string='Progress', compute='compute_progress')
-    progress_gauge = fields.Integer(string='Progress', compute='compute_progress')
+    # progress_gauge = fields.Integer(string='Progress', compute='compute_progress')
     duration = fields.Float(string='Duration')
 
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
+    amount_total = fields.Monetary(string='Total', compute='compute_total_price', currency_field='currency_id')
+
+    @api.depends('pharmacy_lines_ids')
+    def compute_total_price(self):
+        for rec in self:
+            amount_total = 0
+            for line in rec.pharmacy_lines_ids:
+                amount_total += line.price_subtotal
+        rec.amount_total = amount_total
+
+    def set_line_number(self):
+        sl_no = 0
+        for line in self.pharmacy_lines_ids:
+            sl_no += 1
+            line.sl_no = sl_no
+        return
+
+    @api.model
+    def create(self, vals):
+        vals['name'] = self.env['ir.sequence'].next_by_code('hospital.appointment')
+        res = super(HospitalAppointment, self).create(vals)
+        res.set_line_number()
+        return res
+
+    def write(self, values):
+        res = super(HospitalAppointment, self).write(values)
+        self.set_line_number()
+        return res
 
     # Define Onchange Functions
     @api.onchange('patient_id')
@@ -63,6 +89,12 @@ class HospitalAppointment(models.Model):
                     'url': f'#action={action.id}&id={self.patient_id.id}&model=hospital.patient',
                 }],
                 'sticky': True,
+                'next': {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'hospital.patient',
+                    'res_id': self.patient_id.id,
+                    'views': [(False, 'form')]
+                }
             }
         }
 
@@ -156,10 +188,20 @@ class HospitalAppointment(models.Model):
             'url': whatsapp_api_url
         }
 
+    def action_send_email(self):
+        template = self.env.ref('om_hospital.appointment_mail_template')
+        for rec in self:
+            if rec.patient_id.email:
+                email_values = {
+                    'subject': 'Test'
+                }
+                template.send_mail(rec.id, force_send=True, email_values=email_values)
+
     class AppointmentPharmacyLines(models.Model):
         _name = "appointment.pharmacy.lines"
         _description = "Appointment Pharmacy Lines"
 
+        sl_no = fields.Integer(string='SNO.')
         product_id = fields.Many2one('product.product', required=True)
         price_unit = fields.Float(related='product_id.list_price', digits='Product Price')
         qty = fields.Integer(string='Quantity', default=1)

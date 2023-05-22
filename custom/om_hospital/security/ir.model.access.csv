@@ -7,3 +7,6 @@ access.hospital.operation,access_hospital_operation,om_hospital.model_hospital_o
 access.odoo.playground,access_odoo_playground,om_hospital.model_odoo_playground,base.group_user,1,1,1,1
 access.cancel.appointment.wizard,access_cancel_appointment_wizard,om_hospital.model_cancel_appointment_wizard,base.group_user,1,1,1,1
 access.hospital.patient.test,access_hospital_patient_test,om_hospital.model_hospital_patient_test,base.group_user,1,1,1,1
+access.appointment.report.wizard,access_appointment_report_wizard,om_hospital.model_appointment_report_wizard,base.group_user,1,1,1,1
+access.patient.report.wizard,access_patient_report_wizard,om_hospital.model_patient_report_wizard,base.group_user,1,1,1,1
+access.report.om_hospital.report_patient_id_details,access_report_om_hospital_report_patient_id_details,om_hospital.model_report_om_hospital_report_patient_id_details,base.group_user,1,1,1,1

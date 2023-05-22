@@ -72,7 +72,7 @@
                 <field name="appointment_time" optional="show"/>
                 <field name="company_id"/>
                 <field name="currency_id"/>
-<!--                <field name="amount_total" decoration-bf="1"/>-->
+                <!--                <field name="amount_total" decoration-bf="1"/>-->
                 <field name="booking_date" optional="hide"/>
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="ref"/>
@@ -111,7 +111,9 @@
                             states="in_consultation" type="object"/>
 
                     <button name="action_share_whatsapp" string="Share IN Whatsapp" type="object"
-                        class="oe_highlight" data-hotkey="w" icon="fa-whatsapp"/>
+                            class="oe_highlight" data-hotkey="w" icon="fa-whatsapp"/>
+                    <button name="action_send_email" string="Send Mail" type="object"
+                            class="oe_highlight" data-hotkey="E" icon="fa-envelope-o"/>
 
                     <button name="%(om_hospital.action_cancel_appointment)d" string="Cancel" data-hotkey="c"
                             class="oe_highlight" context="{'default_appointment_id': active_id, 'hide_appointment':1}"
@@ -130,7 +132,6 @@
 
                     <group>
                         <group>
-<<<<<<< HEAD
                             <field name="patient_id"/>
                             <field name="name"/>
                             <field name="ref" force_save="1"/>
@@ -141,7 +142,6 @@
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="operation_id"/>
                             <field name="duration"/>
-=======
                             <field name="patient_id" widget="selection"/>
                             <field name="name"/>
                             <field name="ref" readonly="1" force_save="1"/>
@@ -149,7 +149,6 @@
                             <!--Default Focus Attribute-->
                             <field name="booking_date" default_focus="1"/>
                             <field name="operation" default_focus="1"/>
->>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
                             <field name="doctor_id" widget="many2one_avatar_user"/>
                         </group>
                         <group>
@@ -184,8 +183,10 @@
                         <page string="Pharmacy" name="pharmacy">
                             <field name="pharmacy_lines_ids">
                                 <tree editable="bottom">
+                                    <field name="sl_no" readonly="1"/>
                                     <field name="product_id"/>
-                                    <field name="price_unit" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits':True}"
+                                    <field name="price_unit" widget="monetary"
+                                           options="{'currency_field': 'currency_id', 'field_digits':True}"
                                            attrs="{'column_invisible': [('parent.hide_sales_price', '=', True)]}"/>
                                     <field name="qty"/>
                                     <field name="currency_id" invisible="1"/>
@@ -201,6 +202,11 @@
                                     </group>
                                 </form>
                             </field>
+                            <group name="amount_total_group" col="6" class="mt-2 mt-md-0">
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="group_appointment_total">
+                                  <field name="amount_total" colspan="2" style="font-weight:bold;"/>
+                                </group>
+                            </group>
                         </page>
                     </notebook>
 

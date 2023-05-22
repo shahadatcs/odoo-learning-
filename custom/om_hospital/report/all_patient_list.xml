@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_patient_id_details">
+        <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="text-center">
+                            <h2>Patient Details</h2>
+                         <table class=" table table-bordered mt32">
+                              <thead>
+                                <tr>
+                                    <th name="th_name" class="text_left">
+                                    <span>Patient Name</span>
+                                    </th>
+
+                                    <th name="th_gender" class="text_left">
+                                    <span>Gender</span>
+                                    </th>
+
+                                    <th name="th_age" class="text_left">
+                                    <span>Age</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                             <span>Email <t t-esc="email"/></span>
+<!--                             <t t-esc="docs"/>-->
+                            <t t-foreach="docs" t-as="line">
+                                <tr>
+                                    <td>
+                                    <span t-esc="line.name"/>
+                                    </td>
+
+                                    <td>
+                                    <span t-esc="line.gender"/>
+                                    </td>
+
+                                    <td>
+                                    <span t-esc="line.age"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+    </template>
+</odoo>

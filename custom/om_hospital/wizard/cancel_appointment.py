@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 from odoo import api, fields, models, _
-=======
-from odoo import api, fields, models
->>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
+
 from odoo.exceptions import ValidationError
 from datetime import date
 from dateutil import relativedelta
@@ -30,28 +27,31 @@ class CancelAppointmentWizard(models.TransientModel):
     def action_cancel(self):
         # action = self.env.ref('om_hospital.action_hospital_appointment').read()[0]
         cancel_days = self.env['ir.config_parameter'].get_param('om_hospital.cancel_days')
-<<<<<<< HEAD
+
         allowed_day = self.appointment_id.booking_date - relativedelta.relativedelta(days=int(cancel_days))
         print('Cancel Days', allowed_day)
         if cancel_days != 0 and allowed_day < date.today():
             raise ValidationError(_('Sorry, Cancellation is not allowed for booking'))
-        self.appointment_id.state = 'cancel'
-        return {
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'cancel.appointment.wizard',
-            'target': 'new',
-            'res_id': self.id
-        }
+        query = '''select id,patient_id from Hospital_appointment where id =%s''' % self.appointment_id.id
+        # self.env.cr.execute(query)
+        self._cr.execute(query)
+        patients = self.env.cr.dictfetchall()
+        print('patients-------->', patients)
+        # self.appointment_id.state = 'cancel'
         # return {
-        #     'type': 'ir.actions.client',
-        #     'tag': 'reload',
+        #     'type': 'ir.actions.act_window',
+        #     'view_mode': 'form',
+        #     'res_model': 'cancel.appointment.wizard',
+        #     'target': 'new',
+        #     'res_id': self.id
         # }
-=======
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
         allowed_day = date.today() - relativedelta.relativedelta(days=int(cancel_days))
         print('Cancel Days', allowed_day)
         if allowed_day > date.today():
             raise ValidationError('Sorry, Cancellation is not allowed for booking')
->>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
         # #action['domain'] = [('patient_id', '=', self.patient_id.id)]
         # return action

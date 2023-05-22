@@ -6,10 +6,7 @@
         <field name="model">hospital.operation</field>
         <field name="arch" type="xml">
             <tree export_xlsx="0">
-<<<<<<< HEAD
                 <field name="sequence" widget="handle"/>
-=======
->>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
                 <field name="operation_name"/>
                 <field name="doctor_id"/>
             </tree>
@@ -26,11 +23,9 @@
                     <group>
                         <field name="operation_name"/>
                         <field name="doctor_id"/>
-<<<<<<< HEAD
                         <field name="reference_record"/>
                         <field name="sequence"/>
-=======
->>>>>>> fdb342f4bee078528f0a037b254f5d3cedfbfc51
+
                     </group>
                 </sheet>
                 <!--Chatter-->

@@ -6,6 +6,7 @@
     <menuitem id="menu_hospital_appointment" name="Appointments" parent="menu_hospital_root" sequence="2"/>
     <menuitem id="menu_configuration" name="Configurations" parent="menu_hospital_root" sequence="3"/>
     <menuitem id="technical_menu_test" name="Technical" parent="menu_hospital_root" sequence="5"/>
+    <menuitem id="report_menu_test" name="Reporting" parent="menu_hospital_root" sequence="6"/>
 
 
     <!-- action for female submenu -->
@@ -44,6 +45,11 @@
               sequence="4"/>
     <menuitem id="menu_playground" name="Playground" action="action_playground_view" parent="technical_menu_test"
               sequence="4"/>
+
+    <menuitem id="menu_appointment_report" name="Appointments" parent="report_menu_test" action="action_report_appointment"
+              sequence="1"/>
+    <menuitem id="menu_patient_report" name="Patients" parent="report_menu_test" action="action_report_patient"
+              sequence="2"/>
 
     <!--    Custom action setting from sales modules-->
     <!--    <menuitem id="menu_patient" name="Patient" action="sale.product_template_action" parent="menu_patient_master" sequence="1"/>-->
